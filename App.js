@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useFonts } from '@use-expo/font';
-import { StyleSheet, Text, View, Button, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList, Button } from 'react-native';
 
 import DefaultText from './components/DefaultText';
 import SecondaryText from './components/SecondaryText';
@@ -9,41 +9,67 @@ import Colors from './constants/colors';
 
 export default function App() {
 
-  let [defaultFont] = useFonts({
+  const [listData, setListData] = useState([
+    { id: "1", listTitle: "Cook Something For Dinner (Elijah, Jozhua, Chun Wei)", listDetails: "Hello Guys", listDate: "12/06" },
+    { id: "2", listTitle: "Cook Something For Dinner (Elijah, Jozhua, Chun Wei)", listDetails: "Hello Guys", listDate: "12/06" },
+  ]);
+
+  const [defaultFont] = useFonts({
     'Maiandra GD': require('./assets/fonts/Maiandra GD Regular.ttf'),
   });
 
-  let [secondaryFont] = useFonts({
+  const [secondaryFont] = useFonts({
     'Freestyle Script': require('./assets/fonts/freescpt.ttf'),
   });
+
+  const addNewList = () => {
+    console.log(listData);
+  }
 
   return (
     <View style={styles.screen}>
       <View style={styles.lists}>
+        {/* <FlatList
+          data={listData}
+          keyExtractor={listDataItem => listDataItem.id}
+          renderItem={listDataItem => (
+            <View style={styles.list}>
+              <Image style={styles.listButton} source={require('./assets/normalbutton.png')} />
+              <TouchableOpacity style={styles.listTitle}>
+                <DefaultText style={styles.listText}>{listDataItem.item.listTitle}</DefaultText>
+                <SecondaryText style={styles.listDate}>{listDataItem.item.listDate}</SecondaryText>
+              </TouchableOpacity>
+            </View>
+          )}
+        /> */}
         <View style={styles.list}>
           <Image style={styles.listButton} source={require('./assets/normalbutton.png')} />
           <TouchableOpacity style={styles.listTitle}>
-            <DefaultText style={styles.listText}>Cook Something For Dinner (Elijah, Jozhua, Chun Wei)</DefaultText>
-            <SecondaryText style={styles.listDate}>12/06</SecondaryText>
+            <DefaultText style={styles.listText}>Hello</DefaultText>
+            <SecondaryText style={styles.listDate}>Hello</SecondaryText>
           </TouchableOpacity>
         </View>
         <View style={styles.list}>
-          <Text style={styles.listButton}>O</Text>
+          <Image style={styles.listButton} source={require('./assets/normalbutton.png')} />
           <TouchableOpacity style={styles.listTitle}>
-            <DefaultText style={styles.listText}>Cook Something</DefaultText>
+            <DefaultText style={styles.listText}>Hello</DefaultText>
+            <SecondaryText style={styles.listDate}>Hello</SecondaryText>
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity activeOpacity={.6} style={[styles.button, styles.buttonActive]}>
-          <DefaultText style={styles.buttonText}>Normal</DefaultText>
+      <View style={styles.menuButtonContainer}>
+        <TouchableOpacity activeOpacity={.6} style={[styles.menuButton, styles.menuButtonActive]}>
+          <Image style={styles.listButton} source={require('./assets/normalbutton.png')} />
+          <DefaultText style={styles.menuButtonText}>Normal</DefaultText>
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={.6} style={styles.button}>
-          <DefaultText style={styles.buttonText}>Important</DefaultText>
+        <TouchableOpacity activeOpacity={.6} style={styles.menuButton}>
+          <Image style={styles.listButton} source={require('./assets/normalbutton.png')} />
+          <DefaultText style={styles.menuButtonText}>Important</DefaultText>
         </TouchableOpacity>
-        {/* <Button style={styles.button} title="Normal" />
-        <Button style={styles.button} title="Important" /> */}
       </View>
+      <TouchableOpacity style={styles.addListButtonContainer} onPress={addNewList}>
+        <Image style={styles.addListButton} source={require('./assets/logo.png')} />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -55,7 +81,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   lists: {
-    height: '92%',
+    height: '91%',
   },
   list: {
     flexDirection: 'row',
@@ -84,20 +110,34 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     marginTop: 8,
   },
-  buttonContainer: {
+  menuButtonContainer: {
     flexDirection: 'row',
     flex: 1,
   },
-  button: {
+  menuButton: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: Colors.primary,
   },
-  buttonText: {
+  menuButtonText: {
     fontSize: 14,
   },
-  buttonActive: {
+  menuButtonActive: {
     backgroundColor: Colors.secondary,
+  },
+  addListButtonContainer: {
+    position: 'absolute',
+    right: 25,
+    bottom: 75,
+    borderWidth: 2,
+    borderRadius: 50,
+    padding: 15,
+    borderColor: Colors.tertiary,
+  },
+  addListButton: {
+    width: 32,
+    height: 32,
+    resizeMode: 'contain',
   }
 });
