@@ -11,7 +11,7 @@ export default function App() {
 
   const [listData, setListData] = useState([
     { id: "1", listTitle: "Cook Something For Dinner (Elijah, Jozhua, Chun Wei)", listDetails: "Hello Guys", listDate: "12/06" },
-    { id: "2", listTitle: "Cook Something For Dinner (Elijah, Jozhua, Chun Wei)", listDetails: "Hello Guys", listDate: "12/06" },
+    { id: "2", listTitle: "Cook Something For Dinner (Bryan, Jozhua, Chun Wei)", listDetails: "Hello Guys", listDate: "12/06" },
   ]);
 
   const [defaultFont] = useFonts({
@@ -29,20 +29,22 @@ export default function App() {
   return (
     <View style={styles.screen}>
       <View style={styles.lists}>
-        {/* <FlatList
+        <FlatList
           data={listData}
           keyExtractor={listDataItem => listDataItem.id}
           renderItem={listDataItem => (
             <View style={styles.list}>
-              <Image style={styles.listButton} source={require('./assets/normalbutton.png')} />
+              <TouchableOpacity>
+                <Image style={styles.listButton} source={require('./assets/normalbutton.png')} />
+              </TouchableOpacity>
               <TouchableOpacity style={styles.listTitle}>
                 <DefaultText style={styles.listText}>{listDataItem.item.listTitle}</DefaultText>
                 <SecondaryText style={styles.listDate}>{listDataItem.item.listDate}</SecondaryText>
               </TouchableOpacity>
             </View>
           )}
-        /> */}
-        <View style={styles.list}>
+        />
+        {/* <View style={styles.list}>
           <Image style={styles.listButton} source={require('./assets/normalbutton.png')} />
           <TouchableOpacity style={styles.listTitle}>
             <DefaultText style={styles.listText}>Hello</DefaultText>
@@ -55,7 +57,7 @@ export default function App() {
             <DefaultText style={styles.listText}>Hello</DefaultText>
             <SecondaryText style={styles.listDate}>Hello</SecondaryText>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
       <View style={styles.menuButtonContainer}>
         <TouchableOpacity activeOpacity={.6} style={[styles.menuButton, styles.menuButtonActive]}>
@@ -85,7 +87,9 @@ const styles = StyleSheet.create({
   },
   list: {
     flexDirection: 'row',
-    height: '5%',
+    //* height weirdly influences the items in FlatList
+    // height: '30%',
+    // backgroundColor: 'red',
     marginVertical: 15,
   },
   listButton: {
