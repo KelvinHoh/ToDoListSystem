@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image, FlatList } from 'react-native';
+import { SharedElement } from 'react-navigation-shared-element';
 
 import DefaultText from '../components/defaultText';
 import SecondaryText from '../components/secondaryText';
@@ -8,9 +9,11 @@ import Colors from '../constants/colors';
 
 export default Home = ({ navigation }) => {
 
+    // const 
+
     const [listData, setListData] = useState([
-        { id: "1", listTitle: "Cook Something For Dinner (Elijah, Jozhua, Chun Wei)", listDetails: "Hello Guys", listDate: "12/06" },
-        { id: "2", listTitle: "Cook Something For Dinner (Bryan, Jozhua, Chun Wei)", listDetails: "Hello Guys", listDate: "12/06" },
+        { id: "1", listTitle: "Cook Something For Dinner (Elijah, Jozhua, Chun Wei)", listDescription: "Hello Guys", listDate: "12/06" },
+        { id: "2", listTitle: "Cook Something For Dinner (Bryan, Jozhua, Chun Wei)", listDescription: "Hello Guys", listDate: "12/06" },
     ]);
 
     const addNewList = () => {
@@ -28,8 +31,10 @@ export default Home = ({ navigation }) => {
                             <TouchableOpacity>
                                 <Image style={styles.listButton} source={require('../assets/normalbutton.png')} />
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.listTitle} onPress={() => navigation.navigate("ListDetails")}>
-                                <DefaultText style={styles.listText}>{listDataItem.item.listTitle}</DefaultText>
+                            <TouchableOpacity style={styles.listTitle} onPress={() => navigation.navigate("ListDetails", { listDataItem })}>
+                                <SharedElement style={styles.listTextContainer} id={listDataItem.item.id}>
+                                    <DefaultText style={{ fontSize: 16 }}>{listDataItem.item.listTitle}</DefaultText>
+                                </SharedElement>
                                 <SecondaryText style={styles.listDate}>{listDataItem.item.listDate}</SecondaryText>
                             </TouchableOpacity>
                         </View>
@@ -42,7 +47,7 @@ export default Home = ({ navigation }) => {
                     <DefaultText style={styles.menuButtonText}>Normal</DefaultText>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={.6} style={styles.menuButton}>
-                    <Image style={styles.listButton} source={require('../assets/normalbutton.png')} />
+                    <Image style={styles.listButton} source={require('../assets/importantbutton.png')} />
                     <DefaultText style={styles.menuButtonText}>Important</DefaultText>
                 </TouchableOpacity>
             </View>
@@ -81,7 +86,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
         borderBottomColor: Colors.primary,
     },
-    listText: {
+    listTextContainer: {
         flex: 1,
         fontSize: 16,
         marginLeft: 15,
