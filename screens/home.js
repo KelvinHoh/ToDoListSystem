@@ -6,7 +6,7 @@ import SecondaryText from '../components/secondaryText';
 
 import Colors from '../constants/colors';
 
-export default Home = () => {
+export default Home = ({ navigation }) => {
 
     const [listData, setListData] = useState([
         { id: "1", listTitle: "Cook Something For Dinner (Elijah, Jozhua, Chun Wei)", listDetails: "Hello Guys", listDate: "12/06" },
@@ -28,7 +28,7 @@ export default Home = () => {
                             <TouchableOpacity>
                                 <Image style={styles.listButton} source={require('../assets/normalbutton.png')} />
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.listTitle}>
+                            <TouchableOpacity style={styles.listTitle} onPress={() => navigation.navigate("ListDetails")}>
                                 <DefaultText style={styles.listText}>{listDataItem.item.listTitle}</DefaultText>
                                 <SecondaryText style={styles.listDate}>{listDataItem.item.listDate}</SecondaryText>
                             </TouchableOpacity>

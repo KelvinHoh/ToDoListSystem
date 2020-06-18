@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Font from 'expo-font';
+import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -18,10 +18,10 @@ const retrieveFonts = () => Font.loadAsync({
 
 export default function App() {
 
-  const [listData, setListData] = useState([
-    { id: "1", listTitle: "Cook Something For Dinner (Elijah, Jozhua, Chun Wei)", listDetails: "Hello Guys", listDate: "12/06" },
-    { id: "2", listTitle: "Cook Something For Dinner (Bryan, Jozhua, Chun Wei)", listDetails: "Hello Guys", listDate: "12/06" },
-  ]);
+  // const [listData, setListData] = useState([
+  //   { id: "1", listTitle: "Cook Something For Dinner (Elijah, Jozhua, Chun Wei)", listDetails: "Hello Guys", listDate: "12/06" },
+  //   { id: "2", listTitle: "Cook Something For Dinner (Bryan, Jozhua, Chun Wei)", listDetails: "Hello Guys", listDate: "12/06" },
+  // ]);
 
   const [fontsLoaded, setFontsLoadingStatus] = useState(false);
 
@@ -30,7 +30,7 @@ export default function App() {
       // <Route />
       <NavigationContainer>
         <Stack.Navigator headerMode="none">
-          {/* <Stack.Screen name="Home" component={Home} /> */}
+          <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="ListDetails" component={ListDetails} />
         </Stack.Navigator>
       </NavigationContainer>
