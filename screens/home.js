@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Image, FlatList } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { StyleSheet, View, TouchableOpacity, Image, FlatList, Animated, SnapshotViewIOSComponent } from 'react-native';
 import { SharedElement } from 'react-navigation-shared-element';
+import * as firebase from 'firebase';
 
 import DefaultText from '../components/defaultText';
 import SecondaryText from '../components/secondaryText';
@@ -9,7 +10,14 @@ import Colors from '../constants/colors';
 
 export default Home = ({ navigation }) => {
 
-    // const 
+    // const fadeAnim = useRef(new Animated.Value(0)).current;
+
+    // const fadeIn = () => {
+    //     Animated.timing(fadeAnim, {
+    //         toValue: 1,
+    //         duration: 2000
+    //     }).start();
+    // }
 
     const [listData, setListData] = useState([
         { id: "1", listTitle: "Cook Something For Dinner (Elijah, Jozhua, Chun Wei)", listDescription: "Hello Guys", listDate: "12/06" },
@@ -18,6 +26,18 @@ export default Home = ({ navigation }) => {
 
     const addNewList = () => {
         console.log(listData);
+    }
+
+    const retrieveList = () => {
+        firebase
+            .database()
+            .ref("lists/")
+            .on("value", snapshot => {
+                // console.log(snapshot.val())
+                snapshot.forEach(list => {
+                    console.log(list.val());
+                })
+            });
     }
 
     return (
@@ -33,7 +53,7 @@ export default Home = ({ navigation }) => {
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.listTitle} onPress={() => navigation.navigate("ListDetails", { listDataItem })}>
                                 <SharedElement style={styles.listTextContainer} id={listDataItem.item.id}>
-                                    <DefaultText style={{ fontSize: 16 }}>{listDataItem.item.listTitle}</DefaultText>
+                                    <DefaultText style={{ fontSize: 16 }} numberOfLines={1}>{listDataItem.item.listTitle}</DefaultText>
                                 </SharedElement>
                                 <SecondaryText style={styles.listDate}>{listDataItem.item.listDate}</SecondaryText>
                             </TouchableOpacity>
@@ -51,7 +71,7 @@ export default Home = ({ navigation }) => {
                     <DefaultText style={styles.menuButtonText}>Important</DefaultText>
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.addListButtonContainer} onPress={addNewList}>
+            <TouchableOpacity style={styles.addListButtonContainer} onPress={retrieveList}>
                 <Image style={styles.addListButton} source={require('../assets/logo.png')} />
             </TouchableOpacity>
         </View>
@@ -88,7 +108,6 @@ const styles = StyleSheet.create({
     },
     listTextContainer: {
         flex: 1,
-        fontSize: 16,
         marginLeft: 15,
     },
     listDate: {
