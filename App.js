@@ -35,7 +35,7 @@ export default function App() {
 
   const [fontsLoaded, setFontsLoadingStatus] = useState(false);
 
-  const forFade = ({ current, next, layouts }) => ({
+  const swipe = ({ current, next, layouts }) => ({
     cardStyle: {
       transform: [
         {
@@ -65,14 +65,14 @@ export default function App() {
             name="ListDetails"
             component={ListDetails}
             sharedElementsConfig={(route, otherRoute, showing) => {
-              const { listDataItem } = route.params;
+              const listDataItem = route.params.list;
               return [{
                 id: listDataItem.item.id,
                 animation: 'fade',
                 // resize: 'none',
               }];
             }}
-            options={{ cardStyleInterpolator: forFade }}
+            options={{ cardStyleInterpolator: swipe }}
           />
         </Stack.Navigator>
       </NavigationContainer>

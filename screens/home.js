@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { StyleSheet, View, TouchableOpacity, Image, FlatList, Animated, SnapshotViewIOSComponent } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, TouchableOpacity, Image, FlatList, AsyncStorage } from 'react-native';
 import { SharedElement } from 'react-navigation-shared-element';
 import * as firebase from 'firebase';
 
@@ -20,25 +20,73 @@ export default Home = ({ navigation }) => {
     // }
 
     const [listData, setListData] = useState([
-        { id: "1", listTitle: "Cook Something For Dinner (Elijah, Jozhua, Chun Wei)", listDescription: "Hello Guys", listDate: "12/06" },
-        { id: "2", listTitle: "Cook Something For Dinner (Bryan, Jozhua, Chun Wei)", listDescription: "Hello Guys", listDate: "12/06" },
+        // { id: "1", listTitle: "Cook Something For Dinner (Elijah, Jozhua, Chun Wei)", listDescription: "Hello Guys", listDate: "12/06" },
+        // { id: "2", listTitle: "Cook Something For Dinner (Bryan, Jozhua, Chun Wei)", listDescription: "Hello Guys", listDate: "12/06" },
     ]);
 
-    const addNewList = () => {
-        console.log(listData);
+    const addNewList = async () => {
+        // console.log(netInfo.isConnected);
+        // console.log(listData);
+        // const items = [['k1', JSON.stringify(listData)]];
+        // AsyncStorage.multiSet(items);
+        // AsyncStorage.multiSet([['listsKey', JSON.stringify(listData)]]);
+        // console.log(listData);
+        // await AsyncStorage.multiGet(["lists"]).then(response => {
+        //     console.log(JSON.parse(response[0][1]));
+        //     // console.log(JSON.parse(response[0][1])[1].listDescription);
+        // })
+        // AsyncStorage.multiSet([['lists', JSON.stringify(listData)]]);
+
+        // console.log(listData);
     }
 
-    const retrieveList = () => {
-        firebase
-            .database()
-            .ref("lists/")
-            .on("value", snapshot => {
-                // console.log(snapshot.val())
-                snapshot.forEach(list => {
-                    console.log(list.val());
-                })
+    // const retrieveList = () => {
+    //     firebase
+    //         .database()
+    //         .ref("lists/")
+    //         .on("value", snapshot => {
+    //             // console.log(snapshot.val())
+    //             snapshot.forEach(list => {
+    //                 setListData(listData => [...listData, { id: list.val().id, listTitle: list.val().listTitle }]);
+    //             })
+    //         });
+    // }
+
+    useEffect(() => {
+        // firebase
+        //     .database()
+        //     .ref("lists/")
+        //     .on("value", snapshot => {
+        //         setListData([]);
+        //         snapshot.forEach(list => {
+        //             setListData(listData =>
+        //                 [...listData,
+        //                 {
+        //                     id: list.val().id,
+        //                     listTitle: list.val().listTitle,
+        //                     listDate: list.val().listDate,
+        //                     listDescription: list.val().listDescription
+        //                 }]);
+        //         })
+        //     });
+        AsyncStorage.multiGet(["listsKey"], (error, stores) => {
+            stores.map(store => {
+                let lists = store[1];
+                JSON.parse(lists).map(
+                    list => {
+                        setListData(listData =>
+                            [...listData,
+                            {
+                                id: list.id,
+                                listTitle: list.listTitle,
+                                listDate: list.listDate,
+                                listDescription: list.listDescription
+                            }]);
+                    }
+                );
             });
-    }
+        })
+    }, []);
 
     return (
         <View style={styles.screen}>
@@ -51,7 +99,7 @@ export default Home = ({ navigation }) => {
                             <TouchableOpacity>
                                 <Image style={styles.listButton} source={require('../assets/normalbutton.png')} />
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.listTitle} onPress={() => navigation.navigate("ListDetails", { listDataItem })}>
+                            <TouchableOpacity style={styles.listTitle} onPress={() => navigation.navigate("ListDetails", { lists: listData, list: listDataItem })}>
                                 <SharedElement style={styles.listTextContainer} id={listDataItem.item.id}>
                                     <DefaultText style={{ fontSize: 16 }} numberOfLines={1}>{listDataItem.item.listTitle}</DefaultText>
                                 </SharedElement>
@@ -71,7 +119,7 @@ export default Home = ({ navigation }) => {
                     <DefaultText style={styles.menuButtonText}>Important</DefaultText>
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.addListButtonContainer} onPress={retrieveList}>
+            <TouchableOpacity style={styles.addListButtonContainer} onPress={addNewList}>
                 <Image style={styles.addListButton} source={require('../assets/logo.png')} />
             </TouchableOpacity>
         </View>
